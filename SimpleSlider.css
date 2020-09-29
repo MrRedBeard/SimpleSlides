@@ -1,0 +1,121 @@
+﻿/*body
+{
+    min-width: 1403px;*/ /* min width before cells start having alignment issues */
+    /*min-height: 900px;
+	height: 100%!important;
+}*/
+simpleSlider
+{
+	display: block;
+	min-height: 800px;
+    min-width: 600px;
+    height: 100%; /* main has to be set to 100% for the slider to be full screen */
+    /* <main role="main" class="container-fluid"> */
+	width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+simpleSlider .slider
+{
+    min-height: inherit;
+    height: 95%;
+    width: 100%;
+    overflow: hidden;
+}
+
+simpleSlider .slider .slides
+{
+    min-height: inherit;
+    height: 100%;
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+.slider .slides::-webkit-scrollbar
+{
+    width: 10px;
+    height: 10px;
+}
+
+.slider .slides::-webkit-scrollbar-thumb
+{
+    background: black;
+    border-radius: 10px;
+}
+
+.slider .slides::-webkit-scrollbar-track
+{
+    background: transparent;
+}
+
+.slider .slides > div
+{
+    scroll-snap-align: start;
+    flex-shrink: 0 !important;
+    width: 100%;
+    min-height: inherit;
+    height: 100% !important;
+    margin-right: 50px;
+    border-radius: 10px;
+    background: #eee;
+    transform-origin: center center;
+    transform: scale(1);
+    transition: transform 0.5s;
+    position: relative;
+    display: flex !important;
+    /*justify-content: center;
+    align-items: center;*/
+}
+
+.slider .slide
+{
+    min-height: inherit;
+    max-width: 100%;
+    flex-shrink: 0 !important;
+    height: 100% !important;
+
+    padding: 10px;
+}
+
+.sliderNav
+{
+    height: 5%;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.sliderNav .previous, .sliderNav .next, .sliderNav .slideNumbers span
+{
+    cursor: pointer;
+}
+
+.sliderNav .slideNumbers span
+{
+    margin-right: 10px;
+}
+
+.sliderNav .slideNumbers .current
+{
+    display: inline-block;
+    height: 40px;
+    min-width: 40px;
+    line-height: 1.3;
+    margin-top: -0.5em;
+    border-radius: 10%;
+    color: #fff;
+    background: #000;
+    text-align: center;
+    padding-bottom: 30px;
+    overflow-x: visible;
+    cursor: default;
+}
+
+.sliderNav .pageNum
+{
+    float: right;
+    margin-right: 50px;
+}
