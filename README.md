@@ -3,6 +3,10 @@ SimpleSlides css and native javascript based slides and controls
 
 SimpleSlides is css based but uses a js class to build the timeline from data and to provide navigation/controls.
 
+![ScreenShot](./ScreenShot1.PNG)
+
+![ScreenShot](./ScreenShot2.gif)
+
 ```javascript
 <script>
         let sliderOptions =
