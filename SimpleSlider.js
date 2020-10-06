@@ -43,19 +43,10 @@
         }
 
         this.init();
-
-        
-
         this.createEvents();
-
         this.updateNav();
 
-        if (typeof options.noActivityTimeoutEnabled === 'undefined')
-        {
-            options.noActivityTimeoutEnabled = false;
-        }
-
-        this.noActivityTimeoutEnabled = options.noActivityTimeoutEnabled || false;
+        this.noActivityTimeoutEnabled = (options.noActivityTimeoutEnabled === undefined) ? false : options.noActivityTimeoutEnabled;
 
         this.noActivityTimeoutTime = 180000;
         this.noActivityTimeoutTime = 2000;
@@ -72,8 +63,7 @@
         //this.monitorEvents(this.slidesEl); //For testing
     }
 
-    init()
-    {
+    init() {
         //console.log('clsSlider.js: init()');
 
         this.sliderEl = document.createElement('div');
@@ -104,65 +94,36 @@
         //}
     }
 
-    createEvents()
-    {
+    createEvents() {
         //console.log('clsSlider.js: createEvents()');
 
-        this.slidesEl.onscroll = function()
-        {
+        //Prevent duplicate calls from scroll event && Slide navigation occured
+        this.slidesEl.onscroll = () => {
             clearTimeout(this.scrollTimer);
-
-            this.scrollTimer = setTimeout(function () //Prevent duplicate calls from scroll event
-            {
-                this.getCurrentSlide(); //Slide navigation occured
-            }.bind(this), 20);
-        }.bind(this);
-
-        this.navPrevEl.onclick = function ()
-        {
-            this.gotoPreviousSlide();
-        }.bind(this);
-
-        this.navNextEl.onclick = function ()
-        {
-            this.gotoNextSlide();
-        }.bind(this);
+            this.scrollTimer = setTimeout(() => {this.getCurrentSlide()}, 20);
+        }
+        this.navPrevEl.onclick = () => {this.gotoPreviousSlide()};
+        this.navNextEl.onclick = () => {this.gotoNextSlide()};
     }
 
-    noActivityTimer()
-    {
-        if (!this.noActivityTimeoutEnabled)
-        {
-            clearTimeout(this.noActivityTimeout);
-        }
-        else
-        {
-            clearTimeout(this.noActivityTimeout);
-
-            this.noActivityTimeout = setTimeout(function ()
-            {
-                //Call automation 
-                this.autoSlideTimer();
-            }.bind(this), this.noActivityTimeoutTime);
+    noActivityTimer() {
+        clearTimeout(this.noActivityTimeout);
+        if (this.noActivityTimeoutEnabled) {
+            //Call automation 
+            this.noActivityTimeout = setTimeout(() => {this.autoSlideTimer()}, this.noActivityTimeoutTime);
         }
     }
 
-    startAuto()
-    {
+    startAuto() {
         this.autoSlideTimer();
     }
 
-    stopAuto()
-    {
+    stopAuto() {
         clearTimeout(this.autoSlideTimeout);
     }
-
-    autoSlideTimer()
-    {
-        this.autoSlideTimeout = setTimeout(function ()
-        {
-            let nextSlide = this.currentSlide + 1;
-
+    autoSlideTimer() {
+        this.autoSlideTimeout = setTimeout(() => {
+            const nextSlide = this.currentSlide + 1;
             if (nextSlide > (this.slides.length - 1))
             {
                 //nextSlide = 0;
@@ -173,16 +134,13 @@
 
             this.gotoSlide(nextSlide);
 
-            setTimeout(function ()
-            {
-                this.autoSlideTimer();
-            }.bind(this), this.autoSlideShowTime);
-        }.bind(this), this.autoSlideTimeoutTime);
+            setTimeout(() => {this.autoSlideTimer()}, this.autoSlideShowTime);
+
+        }, this.autoSlideTimeoutTime);
     }
 
-    addSlide(html)
-    {
-        let slide = this.slideTemplate.cloneNode(true);
+    addSlide(html) {
+        const slide = this.slideTemplate.cloneNode(true);
         if (typeof html === 'object')
         {
             slide.appendChild(html);
@@ -201,42 +159,35 @@
         this.updateNav();
     }
 
-    gotoSlide(num)
-    {
+    gotoSlide(num) {
         //console.log('clsSlider.js: gotoSlide(num)');
 
-        let slidenum = this.url + '#slide-' + num;
+        const slidenum = this.url + '#slide-' + num;
         this.currentSlide = num;
         location.href = slidenum;
         window.history.pushState(null, null, this.url);
     }
 
-    gotoPreviousSlide()
-    {
+    gotoPreviousSlide() {
         let nextSlide = this.currentSlide - 1;
 
-        if (nextSlide < 0)
-        {
+        if (nextSlide < 0) {
             nextSlide = this.slides.length - 1;
         }
-
         this.gotoSlide(nextSlide);
     }
 
-    gotoNextSlide()
-    {
+    gotoNextSlide() {
         let nextSlide = this.currentSlide + 1;
 
         if (nextSlide > (this.slides.length - 1))
         {
             nextSlide = 0;
         }
-
         this.gotoSlide(nextSlide);
     }
 
-    updateNav()
-    {
+    updateNav() {
         //console.log('clsSlider.js: updateNav()');
 
         this.slides = document.querySelectorAll('.slide');
@@ -244,30 +195,25 @@
         this.navPageNumEl.innerHTML = 'Page ' + (this.currentSlide + 1) + "/" + this.slides.length;
 
         let numBullets = 0;
-        if (this.slides.length > 10)
-        {
+        if (this.slides.length > 10) {
             numBullets = 10;
         }
-        else if (this.slides.length > 5)
-        {
+        else if (this.slides.length > 5) {
             numBullets = 5;
         }
 
-        let numArray = [];
+        const numArray = [];
         numArray.push(0); //First
         numArray.push((this.slides.length - 1)); //Last
 
         let ictr = 0
-        while (ictr <= (numBullets / 2))
-        {
+        while (ictr <= (numBullets / 2)) {
             let down = this.currentSlide - ictr;
-            if (down > 0 && down < this.slides.length && !numArray.includes(down))
-            {
+            if (down > 0 && down < this.slides.length && !numArray.includes(down)) {
                 numArray.push(down);
             }
             let up = this.currentSlide + ictr;
-            if (up > 0 && up < this.slides.length && !numArray.includes(up))
-            {
+            if (up > 0 && up < this.slides.length && !numArray.includes(up)) {
                 numArray.push(up);
             }
             ictr++;
@@ -276,8 +222,7 @@
 
         this.navSlideNumsEl.innerHTML = '';
 
-        for (var i = 0; i < numArray.length; i++)
-        {
+        for (var i = 0; i < numArray.length; i++) {
             let nums = document.createElement('span');
             nums.innerHTML = (numArray[i] + 1);
             if (numArray[i] === this.currentSlide)
@@ -285,32 +230,24 @@
                 nums.classList.add('current');
             }
             let x = numArray[i];
-            nums.onclick = function ()
-            {
-                this.gotoSlide(x);
-            }.bind(this);
+            nums.onclick = () => {this.gotoSlide(x)};
 
             this.navSlideNumsEl.appendChild(nums);
         }
     }
 
-    getCurrentSlide()
-    {
+    getCurrentSlide() {
         //console.log('clsSlider.js: getCurrentSlide()');
 
-        for (var i = 0; i < this.slides.length; i++)
-        {
-            if (this.inView(this.slides[i]))
-            {
+        for (var i = 0; i < this.slides.length; i++) {
+            if (this.inView(this.slides[i])) {
                 this.currentSlide = i; //May not match id if a slide is removed
             }
         }
-
         this.updateNav();
     }
 
-    inView(slide)
-    {
+    inView(slide) {
         //console.log('clsSlider.js: inView(slide)');
 
         let viewRec = this.slidesEl.getBoundingClientRect();
@@ -325,17 +262,14 @@
     }
 
     //Debug only
-    monitorEvents(element)
-    {
+    monitorEvents(element) {
         var log = function (e) { console.log(e); };
         var events = [];
 
-        for (var i in element)
-        {
+        for (var i in element) {
             if (i.startsWith("on")) events.push(i.substr(2));
         }
-        events.forEach(function (eventName)
-        {
+        events.forEach(function (eventName) {
             console.log(eventName);
             if (!eventName.includes('pointer') && !eventName.includes('mouse'))
             {
