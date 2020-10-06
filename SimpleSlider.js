@@ -284,6 +284,9 @@
             {
                 nums.classList.add('current');
             }
+            else{
+                nums.classList.add('not-current');
+            }
             let x = numArray[i];
             nums.onclick = function ()
             {
