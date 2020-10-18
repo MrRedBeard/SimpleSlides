@@ -10,6 +10,7 @@
 
 </head>
 <body>
+    <button onclick="addNewSlide()" class="addNewSlideButton">+ Add new slide</button>
 	<simpleSlider class="simpleSliderExample"></simpleSlider>
 	
 	
@@ -32,7 +33,13 @@
 		let slide2 = document.createElement('div');
 		slide2.innerHTML = '<H1>Slide 2</H1>'
         slider.addSlide(slide2);
-		
+
+        function addNewSlide(){
+            let slide = document.createElement('div');
+            slide.innerHTML = '<H1>New slide</H1>'
+            slider.addSlide(slide);
+        }
+        
 	</script>
 </body>
 </html>
